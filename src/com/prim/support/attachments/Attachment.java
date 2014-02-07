@@ -1,5 +1,5 @@
 
-package prim.libs.attachments;
+package com.prim.support.attachments;
 
 import javax.activation.DataSource;
 

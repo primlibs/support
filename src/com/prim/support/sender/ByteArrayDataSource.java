@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prim.libs.sender;
+package com.prim.support.sender;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

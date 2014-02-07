@@ -6,7 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.mail.internet.InternetAddress;
 import com.prim.support.MyString;
-import prim.libs.attachments.Attachment;
+import com.prim.support.attachments.Attachment;
+
 
 /**
  * сообщение

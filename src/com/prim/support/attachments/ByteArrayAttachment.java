@@ -1,7 +1,7 @@
-package prim.libs.attachments;
+package com.prim.support.attachments;
 
+import com.prim.support.sender.ByteArrayDataSource;
 import javax.activation.DataSource;
-import prim.libs.sender.ByteArrayDataSource;
 
 
 /**

@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Properties;
 import javax.mail.internet.MimeMessage;
 import com.prim.support.MyString;
-import prim.libs.attachments.Attachment;
+import com.prim.support.attachments.Attachment;
+
 
 /**
  * Класс, который отправляет сообщения

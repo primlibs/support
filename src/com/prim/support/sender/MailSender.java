@@ -1,28 +1,20 @@
 package com.prim.support.sender;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Address;
 import javax.mail.Authenticator;
-import javax.mail.Folder;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import com.prim.support.MyString;
-import prim.libs.attachments.Attachment;
-import com.prim.support.sender.Message;
+import com.prim.support.attachments.Attachment;
 
 /**
  * 

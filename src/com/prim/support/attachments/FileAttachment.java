@@ -1,4 +1,4 @@
-package prim.libs.attachments;
+package com.prim.support.attachments;
 
 import java.io.File;
 import javax.activation.DataSource;
