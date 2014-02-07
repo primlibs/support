@@ -146,10 +146,11 @@ public class FileExecutor {
     String result;
     int i;
     result = "";
+    Reader reader = null;
     try {
       char[] ch = new char[(int) file.length()];
 
-      Reader reader;
+
       if (charset != null) {
         reader = new InputStreamReader(new FileInputStream(file), charset);
       } else {
@@ -160,9 +161,15 @@ public class FileExecutor {
       // поэтому получаем количество считанных символов
       int count = reader.read(ch);
       result = String.valueOf(ch, 0, count);
-      reader.close();
     } catch (IOException exc) {
       errors.add("ошибка при чтении файла: файла не существует");
+    } finally {
+      try {
+        if (reader != null) {
+          reader.close();
+        }
+      } catch (Exception e) {
+      }
     }
     return result;
   }
@@ -205,12 +212,19 @@ public class FileExecutor {
    */
   public byte[] readBytes() {
     byte[] bytes = new byte[(int) file.length()];
+    FileInputStream input = null;
     try {
-      FileInputStream input = new FileInputStream(file);
+      input = new FileInputStream(file);
       input.read(bytes);
-      input.close();
     } catch (IOException e) {
       errors.add("ошибка при чтении файла: файла не существует");
+    } finally {
+      try {
+        if (input != null) {
+          input.close();
+        }
+      } catch (Exception e) {
+      }
     }
     return bytes;
   }
@@ -223,13 +237,20 @@ public class FileExecutor {
    */
   public boolean writeBytes(byte[] bytes) {
     boolean done = false;
+    FileOutputStream output = null;
     try {
-      FileOutputStream output = new FileOutputStream(file);
+      output = new FileOutputStream(file);
       output.write(bytes);
-      output.close();
       done = true;
     } catch (IOException e) {
       errors.add("ошибка при записи в файл: файла не существует");
+    } finally {
+      try {
+        if (output != null) {
+          output.close();
+        }
+      } catch (Exception e) {
+      }
     }
     return done;
   }
@@ -274,13 +295,21 @@ public class FileExecutor {
 
   private boolean writeOrAppend(String string, boolean append) {
     boolean done = false;
+    BufferedWriter writer = null;
     try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(file, append));
+      writer = new BufferedWriter(new FileWriter(file, append));
       writer.write(string);
       done = true;
       writer.close();
     } catch (IOException exc) {
       errors.add("ошибка при записи в файл");
+    } finally {
+      try {
+        if (writer != null) {
+          writer.close();
+        }
+      } catch (Exception e) {
+      }
     }
     return done;
   }

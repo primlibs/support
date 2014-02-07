@@ -105,6 +105,7 @@ public final class URLRequester {
       }
       errors.add(MyString.getStackExeption(e));
     }
+    
     //вернуть результат
     return res;
   }

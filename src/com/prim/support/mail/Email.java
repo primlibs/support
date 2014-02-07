@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * электронное письмо
+ *
  * @author Кот
  */
 public class Email {
@@ -262,7 +263,7 @@ public class Email {
           efile.setMimeType(((MimeBodyPart) m).getContentType());
           efile.setFileName(MimeUtility.decodeText(filename));
           efiles.add(efile);
-        } catch (IOException ex) {
+        } finally {
           try {
             if (in != null) {
               in.close();

@@ -19,7 +19,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-
 /**
  *
  * @author кот
@@ -54,11 +53,11 @@ public class primXml {
     root.appendChild(nm);
     return nm;
   }
-  
+
   public static Document getDocumentByFile(File file) throws Exception {
-     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = dbf.newDocumentBuilder();
-    InputSource is = new InputSource(); 
+    InputSource is = new InputSource();
     FileExecutor exec = new FileExecutor(file);
     is.setCharacterStream(new StringReader(exec.readString("UTF-8")));
 
@@ -96,11 +95,12 @@ public class primXml {
 
     return parentElement.getElementsByTagName(childElementName).item(0).getChildNodes().item(0).getNodeValue();
   }
-  
+
   /**
    * возвращает текстовое значение элемента
+   *
    * @param elem
-   * @return 
+   * @return
    */
   public static String getValue(Element elem) {
 
@@ -163,12 +163,19 @@ public class primXml {
   }
 
   public static String documentToString(Document doc) throws Exception {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    Transformer transformer = transformerFactory.newTransformer();
-    DOMSource source = new DOMSource(doc);
-    CharArrayWriter ch = new CharArrayWriter();
-    StreamResult result = new StreamResult(ch);
-    transformer.transform(source, result);
-    return ch.toString();
+    CharArrayWriter ch = null;
+    try {
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      DOMSource source = new DOMSource(doc);
+      ch = new CharArrayWriter();
+      StreamResult result = new StreamResult(ch);
+      transformer.transform(source, result);
+      return ch.toString();
+    } finally {
+      if (ch != null) {
+        ch.close();
+      }
+    }
   }
 }

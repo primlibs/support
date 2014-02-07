@@ -56,7 +56,7 @@ public abstract class ValidatorAbstract implements Cloneable, Serializable {
    * @throws InstantiationException
    */
   public static ValidatorAbstract getValidator(String validatorName) throws Exception {
-    String valName = "prim.filterValidator.entity." + validatorName;
+    String valName = "com.prim.support.filterValidator.entity." + validatorName;
     try {
       Class cl = Class.forName(valName);
       return (ValidatorAbstract) cl.newInstance();
