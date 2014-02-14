@@ -42,7 +42,7 @@ public abstract class Sender {
       Sender sender;
       name = MyString.ucFirst(name.toString());
       try {
-        sender = (Sender) Class.forName("prim.libs.sender." + name).newInstance();
+        sender = (Sender) Class.forName("com.prim.support.sender." + name).newInstance();
       } catch (Exception eq) {
         throw new Exception("Sender not found " + "prim.libs.sender." + name + " ");
       }
