@@ -4,8 +4,12 @@
  */
 package com.prim.support.mail;
 
+import com.sun.mail.util.BASE64DecoderStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +21,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import org.apache.commons.io.IOUtils;
 
@@ -214,65 +219,146 @@ public class Email {
    * Обработка части письма
    *   
 * @param email - объект EMail, который заполняеться из письма
-   * @param m - Часть письма
+   * @param part - Часть письма
    * @param level - Уровень структуры письма
    * @throws MessagingException
    * @throws IOException
    */
-  public static void ProcessingPart(Email email, Part m, Integer level)
+  public static void ProcessingPart(Email email, Part part, Integer level)
           throws MessagingException, IOException {
 
-    if (m instanceof Message) {
-      ProcessingInfoPart(email, (Message) m);
+
+    /*
+     System.out.println("ContentType:" + part.getContentType());
+     System.out.println("1");
+     if (part instanceof Message) {
+     System.out.println("2");
+     ProcessingInfoPart(email, (Message) part);
+     }
+
+     String filename = part.getFileName();
+
+     //if ((filename == null || "".equals(filename)) && (!m.isMimeType("multipart/*") && !m.isMimeType("message/rfc822"))) {
+     if (part.isMimeType("text/html") || part.isMimeType("text/plain")) {
+
+     System.out.println("5");
+     email.setContent((String) part.getContent());
+     } else if (part.isMimeType("multipart/*")) {
+     System.out.println("6");
+     // Рекурсивный разбор иерархии
+     Multipart mp = (Multipart) part.getContent();
+     level++;
+     int count = mp.getCount();
+     for (int i = 0; i < count; i++) {
+     ProcessingPart(email, mp.getBodyPart(i), level);
+     }
+     } else if (part.isMimeType("message/rfc822")) {
+     System.out.println("7");
+     // Вложенное сообщение
+     level++;
+     ProcessingPart(email, (Part) part.getContent(), level);
+     level--;
+     }
+     System.out.println("8");
+     if (level != 0 && !part.isMimeType("multipart/*") && filename != null) {
+     // Сохранения атачей
+     System.out.println("9");
+     String disp = part.getDisposition();
+     // many mailers don't include a Content-Disposition
+     if (disp == null || disp.equalsIgnoreCase(Part.ATTACHMENT)) {
+
+     List<EFile> efiles = email.getAttachedFile();
+     InputStream in = null;
+     try {
+     in = ((MimeBodyPart) part).getInputStream();
+     byte[] content = IOUtils.toByteArray(in);
+
+     EFile efile = new EFile();
+     efile.setContent(content);
+     efile.setMimeType(((MimeBodyPart) part).getContentType());
+     efile.setFileName(MimeUtility.decodeText(filename));
+     efiles.add(efile);
+     } finally {
+     try {
+     if (in != null) {
+     in.close();
+     }
+     } catch (IOException e) {
+     }
+     }
+     }
+     }
+     System.out.println("10");
+     */
+
+    System.out.println("level:" + level);
+    System.out.println("disposition" + part.getDisposition());
+    System.out.println("fileName" + part.getFileName());
+
+    if (part instanceof Message) {
+      ProcessingInfoPart(email, (Message) part);
     }
 
-    String filename = m.getFileName();
+    String filename = part.getFileName();
+    Object content = part.getContent();
 
-    if ((filename == null || "".equals(filename)) && (!m.isMimeType("multipart/*") && !m.isMimeType("message/rfc822"))) {
-// Текст сообщения
-      email.setContent((String) m.getContent());
-    } else if (m.isMimeType("multipart/*")) {
-// Рекурсивный разбор иерархии
-      Multipart mp = (Multipart) m.getContent();
+    if (content instanceof String) {
+      System.out.println("String");
+      String stringContent = (String) content;
+
+      String disposition = part.getDisposition();
+      if (disposition != null && disposition.equalsIgnoreCase(Part.ATTACHMENT) && filename != null) {
+
+        List<EFile> efiles = email.getAttachedFile();
+
+        EFile efile = new EFile();
+        efile.setContent(stringContent.getBytes());
+        efile.setMimeType(((MimeBodyPart) part).getContentType());
+        efile.setFileName(MimeUtility.decodeText(filename));
+        efiles.add(efile);
+
+      } else {
+        email.setContent(stringContent);
+      }
+    } else if (content instanceof Multipart) {
+      System.out.println("Multipart");
+      Multipart mp = (Multipart) content;
       level++;
       int count = mp.getCount();
       for (int i = 0; i < count; i++) {
         ProcessingPart(email, mp.getBodyPart(i), level);
       }
-    } else if (m.isMimeType("message/rfc822")) {
-// Вложенное сообщение
-      level++;
-      ProcessingPart(email, (Part) m.getContent(), level);
-      level--;
-    }
+    } else if (content instanceof InputStream) {
+      System.out.println("InputStream");
+      String disp = part.getDisposition();
 
-    if (level != 0 && !m.isMimeType("multipart/*") && filename != null) {
-// Сохранения атачей
-      String disp = m.getDisposition();
-// many mailers don't include a Content-Disposition
-      if (disp == null || disp.equalsIgnoreCase(Part.ATTACHMENT)) {
-
+      if (disp != null && disp.equalsIgnoreCase(Part.ATTACHMENT) && filename != null) {        
         List<EFile> efiles = email.getAttachedFile();
-        InputStream in = null;
+        InputStream is = null;
         try {
-          in = ((MimeBodyPart) m).getInputStream();
-          byte[] content = IOUtils.toByteArray(in);
-
+          is = (InputStream) content;
+          byte[] bytes = IOUtils.toByteArray(is);
           EFile efile = new EFile();
-          efile.setContent(content);
-          efile.setMimeType(((MimeBodyPart) m).getContentType());
+          efile.setContent(bytes);
+          efile.setMimeType(((MimeBodyPart) part).getContentType());
           efile.setFileName(MimeUtility.decodeText(filename));
           efiles.add(efile);
         } finally {
           try {
-            if (in != null) {
-              in.close();
+            if (is != null) {
+              is.close();
             }
           } catch (IOException e) {
           }
         }
       }
+    } else if (content instanceof MimeMessage) {
+      System.out.println("MimeMessage");
+      level++;
+      ProcessingPart(email, (Part) part.getContent(), level);
+      level--;
     }
+
   }
 
   /**
