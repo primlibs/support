@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import com.prim.support.MyString;
 import com.prim.support.attachments.Attachment;
+import javax.mail.internet.MimeUtility;
 
 /**
  * 
@@ -102,7 +103,7 @@ public class MailSender extends Sender {
             messageBodyPart.setDataHandler(
                     new DataHandler(source));
 
-            messageBodyPart.setFileName(file.getName());
+            messageBodyPart.setFileName(MyString.transliterate(file.getName()));
             multipart.addBodyPart(messageBodyPart);
           }
 
