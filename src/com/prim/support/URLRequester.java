@@ -6,16 +6,20 @@ package com.prim.support;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import sun.misc.BASE64Encoder;
 
 /**
- * класс для обработки html запросов по url
- * основная задача - получать код удаленной страницы
+ * класс для обработки html запросов по url основная задача - получать код
+ * удаленной страницы
+ *
  * @author пользователь
  */
 public final class URLRequester {
@@ -26,18 +30,15 @@ public final class URLRequester {
   private final String password;
   private List<String> errors = new ArrayList<String>();
   private String result = "";
-
-  
-  public String getResult() {
-    return result;
-  }
+  private String postParameters = "";
+  boolean post = false;
 
   /**
-   * 
+   *
    * @param urlSrc адрес URL
    * @param encode кодировка
    * @param login логин
-   * @param password  пароль
+   * @param password пароль
    */
   public URLRequester(String urlSrc, String encode, String login, String password) {
     this.urlSrc = urlSrc;
@@ -47,7 +48,7 @@ public final class URLRequester {
   }
 
   /**
-   * 
+   *
    * @param urlSrc адрес URL
    * @param encode кодировка
    */
@@ -56,6 +57,33 @@ public final class URLRequester {
     this.encode = urlSrc;
     this.login = null;
     this.password = null;
+  }
+
+  /**
+   * установить строку параметров для запроса POST в формате
+   * name=value&name2=value2
+   *
+   * @param postParameters
+   */
+  public void addPostParameter(Object name, Object value)
+          throws UnsupportedEncodingException {
+    if (!postParameters.isEmpty()) {
+      postParameters += "&";
+    }
+    postParameters += URLEncoder.encode(name.toString(), "UTF-8");
+    postParameters += "=";
+    postParameters += URLEncoder.encode(value.toString(), "UTF-8");
+  }
+
+  /**
+   * установить, что запрос является запросом POST
+   */
+  public void isPost() {
+    this.post = true;
+  }
+
+  public String getResult() {
+    return result;
   }
 
   /*
@@ -74,6 +102,18 @@ public final class URLRequester {
           String encoding = new BASE64Encoder().encode(userPassword.getBytes());
           conn.setRequestProperty("Authorization", "Basic " + encoding);
         }
+
+        if (post) {
+          // если это POST запрос, то отправляем данные на сервер
+          conn.setDoOutput(true);
+          OutputStreamWriter out =
+                  new OutputStreamWriter(conn.getOutputStream(), "ASCII");
+          out.write(postParameters);
+          out.write("\r\n");
+          out.flush();
+          out.close();
+        }
+
         if (encode != null) {
           reader = new BufferedReader(
                   new InputStreamReader(conn.getInputStream(), encode));
@@ -91,7 +131,7 @@ public final class URLRequester {
           //закрыть входной поток
           reader.close();
         }
-        res=true;
+        res = true;
       } else {
         errors.add("Url is null");
       }
@@ -105,17 +145,17 @@ public final class URLRequester {
       }
       errors.add(MyString.getStackExeption(e));
     }
-    
+
     //вернуть результат
     return res;
   }
 
   /**
    * получить ошибки
-   * @return 
+   *
+   * @return
    */
   public final List<String> getErrors() {
     return errors;
   }
-  
 }
