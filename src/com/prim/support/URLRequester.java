@@ -54,7 +54,7 @@ public final class URLRequester {
    */
   public URLRequester(String urlSrc, String encode) {
     this.urlSrc = urlSrc;
-    this.encode = urlSrc;
+    this.encode = encode;
     this.login = null;
     this.password = null;
   }
