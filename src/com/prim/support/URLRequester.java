@@ -85,12 +85,13 @@ public final class URLRequester {
 
   /**
    * устанавливает кодировку для URL. По умолчанию UTF-8
-   * @param urlEncoding 
+   *
+   * @param urlEncoding
    */
   public void setUrlEncoding(String urlEncoding) {
     this.urlEncoding = urlEncoding;
   }
-  
+
   public String getResult() {
     return result;
   }
@@ -115,8 +116,12 @@ public final class URLRequester {
         if (post) {
           // если это POST запрос, то отправляем данные на сервер
           conn.setDoOutput(true);
-          OutputStreamWriter out =
-                  new OutputStreamWriter(conn.getOutputStream(), encode);
+          OutputStreamWriter out;
+          if (encode != null) {
+            out = new OutputStreamWriter(conn.getOutputStream(), encode);
+          } else {
+            out = new OutputStreamWriter(conn.getOutputStream());
+          }
           out.write(postParameters);
           out.write("\r\n");
           out.flush();
