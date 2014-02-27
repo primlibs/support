@@ -107,7 +107,7 @@ public final class URLRequester {
           // если это POST запрос, то отправляем данные на сервер
           conn.setDoOutput(true);
           OutputStreamWriter out =
-                  new OutputStreamWriter(conn.getOutputStream(), "ASCII");
+                  new OutputStreamWriter(conn.getOutputStream());
           out.write(postParameters);
           out.write("\r\n");
           out.flush();
