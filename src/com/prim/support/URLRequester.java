@@ -78,7 +78,7 @@ public final class URLRequester {
   /**
    * установить, что запрос является запросом POST
    */
-  public void isPost() {
+  public void setPostMethod() {
     this.post = true;
   }
 
