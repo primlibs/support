@@ -107,6 +107,7 @@ public final class URLRequester {
       if (urlSrc != null) {
         URL url = new URL(urlSrc);
         URLConnection conn = url.openConnection();
+        
         if (login != null && password != null) {
           String userPassword = login + ":" + password;
           String encoding = new BASE64Encoder().encode(userPassword.getBytes());
