@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public enum ParameterContain {
   
-  EXIST(1, "Содержит"), NOT_EXIST(2, "Не содержит"), NOT_IMPORTANT(1, "Неважно");
+  EXIST(1, "Содержит"), NOT_EXIST(2, "Не содержит"), NOT_IMPORTANT(3, "Неважно");
   
   final private Integer id;
   
