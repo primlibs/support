@@ -41,17 +41,6 @@ public enum ParameterContain {
     return map;
   }
   
-  /**
-   * @return 
-   */
-  public static Map<String, Object>  immovables() {
-    Map<String, Object> map = new LinkedHashMap();
-    map.put(EXIST.id.toString(), EXIST.name);
-    map.put(NOT_EXIST.id.toString(), NOT_EXIST.name);
-    map.put(NOT_IMPORTANT.id.toString(), NOT_IMPORTANT.name);
-    return map;
-  }
-  
   public static String getNameById(Object typeId) {
     String name = "";
     if (typeId != null) {
