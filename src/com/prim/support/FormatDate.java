@@ -123,4 +123,19 @@ public class FormatDate {
     }
     return res;
   }
+  
+  public static Date getDateFrom(Date dt,Boolean after,Object days){
+      Date resDate = null;
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(dt);
+      Integer day= Integer.parseInt(MyString.getString(days));
+      if(after==true){
+          calendar.add(Calendar.DAY_OF_WEEK_IN_MONTH, day);
+      }else{
+          calendar.add(Calendar.DAY_OF_WEEK_IN_MONTH, -day);
+      }
+      resDate=calendar.getTime();
+      return resDate;
+  }
+  
 }
