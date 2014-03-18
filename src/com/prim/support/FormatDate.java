@@ -140,7 +140,6 @@ public class FormatDate {
 
     public static Date getStartOfDate(Date dt) {
         Calendar ca = Calendar.getInstance();
-        ca.setTime(dt);
         ca.set(Calendar.HOUR_OF_DAY, 00);
         ca.set(Calendar.MINUTE, 00);
         ca.set(Calendar.SECOND, 00);
@@ -150,7 +149,9 @@ public class FormatDate {
 
     public static Date getEndOfDate(Date dt) {
         Calendar ca = Calendar.getInstance();
-        ca.setTime(dt);
+        if (dt != null) {
+            ca.setTime(dt);
+        }
         ca.set(Calendar.HOUR_OF_DAY, 23);
         ca.set(Calendar.MINUTE, 59);
         ca.set(Calendar.SECOND, 59);
