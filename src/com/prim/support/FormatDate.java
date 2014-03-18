@@ -130,9 +130,9 @@ public class FormatDate {
       calendar.setTime(dt);
       Integer day= Integer.parseInt(MyString.getString(days));
       if(after==true){
-          calendar.add(Calendar.DAY_OF_WEEK_IN_MONTH, day);
+          calendar.add(Calendar.DAY_OF_MONTH, day);
       }else{
-          calendar.add(Calendar.DAY_OF_WEEK_IN_MONTH, -day);
+          calendar.add(Calendar.DAY_OF_MONTH, -day);
       }
       resDate=calendar.getTime();
       return resDate;
