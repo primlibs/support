@@ -138,6 +138,20 @@ public class FormatDate {
         return resDate;
     }
 
+    public static void setStartOfDate(Calendar cl) {
+        cl.set(Calendar.HOUR_OF_DAY, 00);
+        cl.set(Calendar.MINUTE, 00);
+        cl.set(Calendar.SECOND, 00);
+        cl.set(Calendar.MILLISECOND, 0);
+    }
+
+    public static void setEndOfDate(Calendar cl) {
+        cl.set(Calendar.HOUR_OF_DAY, 23);
+        cl.set(Calendar.MINUTE, 59);
+        cl.set(Calendar.SECOND, 59);
+        cl.set(Calendar.MILLISECOND, 999);
+    }
+    
     public static Date getStartOfDate(Date dt) {
         Calendar ca = Calendar.getInstance();
         ca.set(Calendar.HOUR_OF_DAY, 00);
