@@ -84,7 +84,7 @@ public class FormatDate {
    * @return
    * @throws Exception
    */
-  public static Date getDateFromString(Object str) throws Exception {
+  public static Date getDateFromString(Object str) {
     Date resDate = null;
     Calendar calendar = Calendar.getInstance();
     ChainValidator chain = ChainValidator.getInstance();
@@ -92,10 +92,12 @@ public class FormatDate {
     hs.put("format", FormatDate.getFormatMysql());
     chain.addChain("DateToFormatFilter", hs);
     chain.addChain("DateFormatValidator", hs);
+    try {
     if (chain.execute(str)) {
       SimpleDateFormat formatter = new SimpleDateFormat(FormatDate.getFormatMysql());
       resDate = formatter.parse(chain.getData().toString());
     }
+    } catch (Exception e) { }
     return resDate;
   }
 
