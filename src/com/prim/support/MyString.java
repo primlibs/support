@@ -206,7 +206,7 @@ public class MyString {
    * @param ex
    * @return 
    */
-  public static String getStackExeption(Exception ex) {
+  public static String getStackExeption(Throwable ex) {
     String res = "";
     if (ex != null) {
       StringWriter sw = new StringWriter();
