@@ -20,22 +20,23 @@ public class OgrnValidator extends ValidatorAbstract {
     @Override
     public boolean execute() {
         boolean result = false;
-        BigInteger test = new BigInteger(data.toString());
-        addErrorMessage(" 1. " + data.toString());
         data = data.toString().replaceAll("[^0-9]*", "");
-        addErrorMessage(" 2. " + data.toString());
-        BigInteger test2 = new BigInteger(data.toString());
         if (data.toString().length() == 13) {
             String step = "";
             step = data.toString().substring(0,12);
-            addErrorMessage(" 3. " + step);
             BigInteger step1 = new BigInteger(step);
             char cs = data.toString().charAt(12);
             String coSu = String.valueOf(cs);
             BigInteger contSum = new BigInteger(coSu);
             BigInteger param = new BigInteger("11");
             BigInteger step2 = step1.mod(param);
-            if (step2==contSum){
+            if (step2.compareTo(new BigInteger("9"))>0){
+                char stepSluj = step2.toString().charAt(1);
+                String stepS = String.valueOf(stepSluj);
+                step2 = new BigInteger(stepS);
+            }
+            //addErrorMessage(" 5. " + step2);
+            if (step2.equals(contSum)){
                 result = true;
             }else{
                 result = false;
@@ -50,7 +51,12 @@ public class OgrnValidator extends ValidatorAbstract {
             BigInteger contSum = new BigInteger(coSu);
             BigInteger param = new BigInteger("13");
             BigInteger step2 = step1.mod(param);
-            if (step2==contSum){
+            if (step2.compareTo(new BigInteger("9"))>0){
+                char stepSluj = step2.toString().charAt(1);
+                String stepS = String.valueOf(stepSluj);
+                step2 = new BigInteger(stepS);
+            }
+            if (step2.equals(contSum)){
                 result = true;
             } else {
                 result = false;
