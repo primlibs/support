@@ -46,6 +46,9 @@ public class FormatDate {
     return formatter.format(date);
   }
 
+  public static String getDateInMysql(Calendar date) {
+    return  getDateInMysql(date.getTime());
+  }
   /**
    * возвращает дату в формате Mysql, либо null, если начальна строка передана в
    * неправильном формате
