@@ -179,6 +179,8 @@ public class MyString {
     return res;
   }
   
+  
+  
   /**
    * возвращает true, если параметр равен null либо пустой строке
    * @param param
