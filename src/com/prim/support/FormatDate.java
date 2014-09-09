@@ -176,4 +176,24 @@ public class FormatDate {
     ca.set(Calendar.MILLISECOND, 999);
     return ca.getTime();
   }
+  
+  public static Date getStartOfDate(Calendar dt) {
+    Calendar ca = Calendar.getInstance();
+    ca.setTime(dt.getTime());
+    ca.set(Calendar.HOUR_OF_DAY, 00);
+    ca.set(Calendar.MINUTE, 00);
+    ca.set(Calendar.SECOND, 00);
+    ca.set(Calendar.MILLISECOND, 0);
+    return ca.getTime();
+  }
+
+  public static Date getEndOfDate(Calendar dt) {
+    Calendar ca = Calendar.getInstance();
+    ca.setTime(dt.getTime());
+    ca.set(Calendar.HOUR_OF_DAY, 23);
+    ca.set(Calendar.MINUTE, 59);
+    ca.set(Calendar.SECOND, 59);
+    ca.set(Calendar.MILLISECOND, 999);
+    return ca.getTime();
+  }
 }
