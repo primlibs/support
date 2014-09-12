@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -24,7 +25,7 @@ import sun.misc.BASE64Encoder;
  */
 public final class URLRequester {
 
-  private final String urlSrc;
+  private String urlSrc;
   private final String encode;
   private final String login;
   private final String password;
@@ -33,6 +34,7 @@ public final class URLRequester {
   private String postParameters = "";
   boolean post = false;
   String urlEncoding = "UTF-8";
+  HttpURLConnection connection;
 
   /**
    *
@@ -75,12 +77,19 @@ public final class URLRequester {
     postParameters += "=";
     postParameters += URLEncoder.encode(value.toString(), urlEncoding);
   }
-
+  
   /**
    * установить, что запрос является запросом POST
    */
   public void setPostMethod() {
     this.post = true;
+  }
+
+  /**
+   * установить, что запрос является запросом POST
+   */
+  public void setURL(String urlSrc) {
+    this.urlSrc = urlSrc;
   }
 
   /**
@@ -105,9 +114,14 @@ public final class URLRequester {
     BufferedReader reader = null;
     try {
       if (urlSrc != null) {
-        URL url = new URL(urlSrc);
-        URLConnection conn = url.openConnection();
-        
+        HttpURLConnection conn;
+        if(connection!=null){
+            conn=connection;
+        }else{
+            URL url = new URL(urlSrc);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setFollowRedirects(true);
+        }
         if (login != null && password != null) {
           String userPassword = login + ":" + password;
           String encoding = new BASE64Encoder().encode(userPassword.getBytes());

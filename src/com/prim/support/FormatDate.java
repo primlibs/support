@@ -46,6 +46,9 @@ public class FormatDate {
     return formatter.format(date);
   }
 
+  public static String getDateInMysql(Calendar date) {
+    return  getDateInMysql(date.getTime());
+  }
   /**
    * возвращает дату в формате Mysql, либо null, если начальна строка передана в
    * неправильном формате
@@ -202,6 +205,26 @@ public class FormatDate {
   public static Date getEndOfDate(Date dt) {
     Calendar ca = Calendar.getInstance();
     ca.setTime(dt);
+    ca.set(Calendar.HOUR_OF_DAY, 23);
+    ca.set(Calendar.MINUTE, 59);
+    ca.set(Calendar.SECOND, 59);
+    ca.set(Calendar.MILLISECOND, 999);
+    return ca.getTime();
+  }
+  
+  public static Date getStartOfDate(Calendar dt) {
+    Calendar ca = Calendar.getInstance();
+    ca.setTime(dt.getTime());
+    ca.set(Calendar.HOUR_OF_DAY, 00);
+    ca.set(Calendar.MINUTE, 00);
+    ca.set(Calendar.SECOND, 00);
+    ca.set(Calendar.MILLISECOND, 0);
+    return ca.getTime();
+  }
+
+  public static Date getEndOfDate(Calendar dt) {
+    Calendar ca = Calendar.getInstance();
+    ca.setTime(dt.getTime());
     ca.set(Calendar.HOUR_OF_DAY, 23);
     ca.set(Calendar.MINUTE, 59);
     ca.set(Calendar.SECOND, 59);
