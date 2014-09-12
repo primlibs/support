@@ -28,7 +28,7 @@ public class FormatDate {
   /**
    * возвращает текущую дату в формате MySQL
    *
-   * @return
+   * @return текущая дата в формате mysql
    */
   public static String getCurrentDateInMysql() {
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -39,7 +39,7 @@ public class FormatDate {
    * возвращает дату в формате MySQL
    *
    * @param date
-   * @return
+   * @return дата в формате MySQL
    */
   public static String getDateInMysql(Date date) {
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -50,8 +50,8 @@ public class FormatDate {
    * возвращает дату в формате Mysql, либо null, если начальна строка передана в
    * неправильном формате
    *
-   * @param str
-   * @return
+   * @param str дата в виде строки
+   * @return дата в формате mysql или null
    */
   public static String formatDateInMysql(Object str) {
     HashMap<String, Object> params = new HashMap();
@@ -70,7 +70,7 @@ public class FormatDate {
   /**
    * возвращает формат MySQL
    *
-   * @return
+   * @return формат mysql
    */
   public static String getFormatMysql() {
     return "yyyy-MM-dd HH:mm:ss";
@@ -80,9 +80,8 @@ public class FormatDate {
    * принимает дату в виде строки, возвращает объект Date. Если дата передана в
    * неправильном формате, то возвращает null
    *
-   * @param str
-   * @return
-   * @throws Exception
+   * @param str дата в виде строки
+   * @return объект Date или null
    */
   public static Date getDateFromString(Object str) {
     Date resDate = null;
@@ -104,12 +103,20 @@ public class FormatDate {
   /**
    * возвращает текущую дату
    *
-   * @return
+   * @return текущая дата
    */
   public static Date getCurrentDate() {
     return new Date();
   }
 
+
+  
+  /**
+   * форматировать дату
+   * @param date дата в виде строки
+   * @param format формат даты
+   * @return дата в виде строки, если формат неправильный - то пустая строка
+   */
   public static String format(Object date, String format) {
     String res = "";
     if (date != null) {
@@ -124,6 +131,16 @@ public class FormatDate {
       }
     }
     return res;
+  }
+  
+  /**
+   * форматировать дату
+   * @param date дата 
+   * @param format формат
+   * @return дата в виде строки, если формат неправильный - то пустая строка 
+   */
+  public static String formatByDate(Date date, String format) {
+    return format(getDateInMysql(date), format);
   }
 
   public static Date getDateFrom(Date dt, Boolean after, Object days) {
@@ -140,6 +157,10 @@ public class FormatDate {
     return resDate;
   }
 
+  /**
+   * установить календарь на начало дня
+   * @param cl 
+   */
   public static void setStartOfDate(Calendar cl) {
     cl.set(Calendar.HOUR_OF_DAY, 00);
     cl.set(Calendar.MINUTE, 00);
@@ -147,6 +168,10 @@ public class FormatDate {
     cl.set(Calendar.MILLISECOND, 0);
   }
 
+  /**
+   * установить календарь на конец дня
+   * @param cl 
+   */
   public static void setEndOfDate(Calendar cl) {
     cl.set(Calendar.HOUR_OF_DAY, 23);
     cl.set(Calendar.MINUTE, 59);
@@ -154,6 +179,11 @@ public class FormatDate {
     cl.set(Calendar.MILLISECOND, 999);
   }
 
+  /**
+   * установить дату на начало дня
+   * @param dt
+   * @return 
+   */
   public static Date getStartOfDate(Date dt) {
     Calendar ca = Calendar.getInstance();
     ca.setTime(dt);
@@ -164,6 +194,11 @@ public class FormatDate {
     return ca.getTime();
   }
 
+  /**
+   * установить дату на конец дня
+   * @param dt
+   * @return 
+   */
   public static Date getEndOfDate(Date dt) {
     Calendar ca = Calendar.getInstance();
     ca.setTime(dt);
