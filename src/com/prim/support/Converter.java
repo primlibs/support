@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  *
- * класс преобразует строки из БД в разные типы данных
+ * класс для преобразования значений различных типов
  *
  * @author Rice Pavel
  */
@@ -134,8 +134,8 @@ public final class Converter {
    * @return возвращает значение double. Если исходное значение равно null или передано в неправильном формате, то
    * возвращает значение по умолчанию.
    */
-  public static double getDouble(Object value, double def) {
-    double d = def;
+  public static Double getDouble(Object value, Double def) {
+    Double d = def;
     if (value != null && checkDouble(value.toString())) {
       d = parseDouble(value.toString());
     }
@@ -143,22 +143,38 @@ public final class Converter {
   }
 
   /**
-   * 
+   *
    * @param value значение integer
    * @param def значение по умолчанию
    * @return возвращает значение integer. Если исходное значение равно null или передано в неправильном формате, то
    * возвращает значение по умолчанию.
    */
-  public static int getInteger(Object value, int def) {
-    int d = def;
+  public static Integer getInteger(Object value, Integer def) {
+    Integer d = def;
     if (value != null && checkInteger(value.toString())) {
       d = parseInteger(value.toString());
     }
     return d;
   }
-  
+
   /**
-   * 
+   * получить объект Date
+   *
+   * @param value значение даты в виде строки
+   * @param def значение по умолчанию
+   * @return возвращает значение Date. Если исходное значение равно null или передано в неправильном формате, то
+   * возвращает значение по умолчанию
+   */
+  public static Date getDate(Object value, Date def) {
+    Date d = def;
+    if (value != null && checkDate(value.toString())) {
+      d = parseDate(value.toString());
+    }
+    return d;
+  }
+
+  /**
+   *
    * @param value
    * @return значение в виде строки. Если переданное значение равно null, то возвращает пустую строку.
    */
