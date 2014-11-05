@@ -227,7 +227,6 @@ public class Email {
   public static void ProcessingPart(Email email, Part part, Integer level)
           throws MessagingException, IOException {
 
-
     /*
      System.out.println("ContentType:" + part.getContentType());
      System.out.println("1");
@@ -301,6 +300,7 @@ public class Email {
 
     String filename = part.getFileName();
     Object content = part.getContent();
+    
 
     if (content instanceof String) {
       System.out.println("String");
