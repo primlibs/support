@@ -21,6 +21,7 @@ public class FormatDate {
 
   public final static String SMALL_FORMAT = "dd.MM.yyyy";
   public final static String FULL_FORMAT = "dd.MM.yyyy HH:mm";
+  public final static String DAY_MONTH_FORMAT = "dd.MM";
 
   private FormatDate() {
   }
