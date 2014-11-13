@@ -117,7 +117,7 @@ public final class URLRequester {
         HttpURLConnection conn;
         if(connection!=null){
             conn=connection;
-        }else{
+        } else {
             URL url = new URL(urlSrc);
             conn = (HttpURLConnection) url.openConnection();
             conn.setFollowRedirects(true);
