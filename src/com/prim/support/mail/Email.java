@@ -227,69 +227,6 @@ public class Email {
   public static void ProcessingPart(Email email, Part part, Integer level)
           throws MessagingException, IOException {
 
-    /*
-     System.out.println("ContentType:" + part.getContentType());
-     System.out.println("1");
-     if (part instanceof Message) {
-     System.out.println("2");
-     ProcessingInfoPart(email, (Message) part);
-     }
-
-     String filename = part.getFileName();
-
-     //if ((filename == null || "".equals(filename)) && (!m.isMimeType("multipart/*") && !m.isMimeType("message/rfc822"))) {
-     if (part.isMimeType("text/html") || part.isMimeType("text/plain")) {
-
-     System.out.println("5");
-     email.setContent((String) part.getContent());
-     } else if (part.isMimeType("multipart/*")) {
-     System.out.println("6");
-     // Рекурсивный разбор иерархии
-     Multipart mp = (Multipart) part.getContent();
-     level++;
-     int count = mp.getCount();
-     for (int i = 0; i < count; i++) {
-     ProcessingPart(email, mp.getBodyPart(i), level);
-     }
-     } else if (part.isMimeType("message/rfc822")) {
-     System.out.println("7");
-     // Вложенное сообщение
-     level++;
-     ProcessingPart(email, (Part) part.getContent(), level);
-     level--;
-     }
-     System.out.println("8");
-     if (level != 0 && !part.isMimeType("multipart/*") && filename != null) {
-     // Сохранения атачей
-     System.out.println("9");
-     String disp = part.getDisposition();
-     // many mailers don't include a Content-Disposition
-     if (disp == null || disp.equalsIgnoreCase(Part.ATTACHMENT)) {
-
-     List<EFile> efiles = email.getAttachedFile();
-     InputStream in = null;
-     try {
-     in = ((MimeBodyPart) part).getInputStream();
-     byte[] content = IOUtils.toByteArray(in);
-
-     EFile efile = new EFile();
-     efile.setContent(content);
-     efile.setMimeType(((MimeBodyPart) part).getContentType());
-     efile.setFileName(MimeUtility.decodeText(filename));
-     efiles.add(efile);
-     } finally {
-     try {
-     if (in != null) {
-     in.close();
-     }
-     } catch (IOException e) {
-     }
-     }
-     }
-     }
-     System.out.println("10");
-     */
-
     System.out.println("level:" + level);
     System.out.println("disposition" + part.getDisposition());
     System.out.println("fileName" + part.getFileName());
@@ -300,9 +237,30 @@ public class Email {
 
     String filename = part.getFileName();
     Object content = part.getContent();
-    
 
-    if (content instanceof String) {
+    if (part.isMimeType("image/*")) {
+      // many mailers don't include a Content-Disposition
+      List<EFile> efiles = email.getAttachedFile();
+      InputStream in = null;
+      try {
+        in = ((MimeBodyPart) part).getInputStream();
+        byte[] bytes = IOUtils.toByteArray(in);
+
+        EFile efile = new EFile();
+        efile.setContent(bytes);
+        efile.setMimeType(((MimeBodyPart) part).getContentType());
+        efile.setFileName(MimeUtility.decodeText(filename));
+        efiles.add(efile);
+      } finally {
+        try {
+          if (in != null) {
+            in.close();
+          }
+        } catch (IOException e) {
+        }
+      }
+
+    } else if (content instanceof String) {
       System.out.println("String");
       String stringContent = (String) content;
 
@@ -332,7 +290,7 @@ public class Email {
       System.out.println("InputStream");
       String disp = part.getDisposition();
 
-      if (disp != null && disp.equalsIgnoreCase(Part.ATTACHMENT) && filename != null) {        
+      if (disp != null && disp.equalsIgnoreCase(Part.ATTACHMENT) && filename != null) {
         List<EFile> efiles = email.getAttachedFile();
         InputStream is = null;
         try {
@@ -358,6 +316,72 @@ public class Email {
       ProcessingPart(email, (Part) part.getContent(), level);
       level--;
     }
+
+  }
+
+  @Deprecated
+  private static void oldProcessing(Email email, Part part, Integer level) throws Exception {
+
+    System.out.println("ContentType:" + part.getContentType());
+    System.out.println("1");
+    if (part instanceof Message) {
+      System.out.println("2");
+      ProcessingInfoPart(email, (Message) part);
+    }
+
+    String filename = part.getFileName();
+
+    //if ((filename == null || "".equals(filename)) && (!m.isMimeType("multipart/*") && !m.isMimeType("message/rfc822"))) {
+    if (part.isMimeType("text/html") || part.isMimeType("text/plain")) {
+
+      System.out.println("5");
+      email.setContent((String) part.getContent());
+    } else if (part.isMimeType("multipart/*")) {
+      System.out.println("6");
+      // Рекурсивный разбор иерархии
+      Multipart mp = (Multipart) part.getContent();
+      level++;
+      int count = mp.getCount();
+      for (int i = 0; i < count; i++) {
+        ProcessingPart(email, mp.getBodyPart(i), level);
+      }
+    } else if (part.isMimeType("message/rfc822")) {
+      System.out.println("7");
+      // Вложенное сообщение
+      level++;
+      ProcessingPart(email, (Part) part.getContent(), level);
+      level--;
+    }
+    System.out.println("8");
+    if (level != 0 && !part.isMimeType("multipart/*") && filename != null) {
+      // Сохранения атачей
+      System.out.println("9");
+      String disp = part.getDisposition();
+      // many mailers don't include a Content-Disposition
+      if (disp == null || disp.equalsIgnoreCase(Part.ATTACHMENT)) {
+
+        List<EFile> efiles = email.getAttachedFile();
+        InputStream in = null;
+        try {
+          in = ((MimeBodyPart) part).getInputStream();
+          byte[] content = IOUtils.toByteArray(in);
+
+          EFile efile = new EFile();
+          efile.setContent(content);
+          efile.setMimeType(((MimeBodyPart) part).getContentType());
+          efile.setFileName(MimeUtility.decodeText(filename));
+          efiles.add(efile);
+        } finally {
+          try {
+            if (in != null) {
+              in.close();
+            }
+          } catch (IOException e) {
+          }
+        }
+      }
+    }
+    System.out.println("10");
 
   }
 
@@ -427,7 +451,6 @@ public class Email {
       }
     }
 
-
 // x-mail
     String[] hdrs = m.getHeader("X-Mailer");
     if (hdrs != null) {
@@ -487,8 +510,7 @@ public class Email {
   }
 
   /**
-   * Возвращает первый не null элемент массива и если таких элементов нет, то
-   * null
+   * Возвращает первый не null элемент массива и если таких элементов нет, то null
    *   
 * @param mas - массив
    * @return Первый не null элемент массива и если таких элементов нет, то null
