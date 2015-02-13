@@ -20,6 +20,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
@@ -477,7 +478,7 @@ public class Email {
       return;
     }
     for (int i = 0; i < address.length; i++) {
-      result.add(MimeUtility.decodeText(address[i].toString()));
+      result.add(((InternetAddress) address[i]).getAddress());
     }
     if (addTo) {
       email.setTo(result);
