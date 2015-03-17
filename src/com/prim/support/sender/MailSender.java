@@ -171,7 +171,7 @@ public class MailSender extends Sender {
   }
 
   @Override
-  protected String getProp(Object name) {
+  public String getProp(Object name) {
     if (name != null) {
       return props.getProperty("sender.mail." + name.toString());
     }

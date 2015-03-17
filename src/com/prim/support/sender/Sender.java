@@ -122,5 +122,5 @@ public abstract class Sender {
    * @param name название свойства
    * @return 
    */
-  protected abstract Object getProp(Object name);
+  public abstract Object getProp(Object name);
 }
